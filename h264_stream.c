@@ -2814,7 +2814,50 @@ void read_debug_dec_ref_pic_marking(h264_stream_t* h, bs_t* b);
 void read_debug_slice_header_in_scalable_extension(h264_stream_t* h, bs_t* b);
 void read_debug_dec_ref_base_pic_marking(nal_t* nal, bs_t* b);
 
-
+char* nal_unit_type_to_str(int nal_unit_type) {
+    switch ( nal_unit_type ) {
+        case NAL_UNIT_TYPE_UNSPECIFIED:
+            return "UNSPECIFIED";
+        case NAL_UNIT_TYPE_CODED_SLICE_NON_IDR:
+            return "NON_IDR";
+        case NAL_UNIT_TYPE_CODED_SLICE_DATA_PARTITION_A:
+            return "DATA_PARTITION_A";
+        case NAL_UNIT_TYPE_CODED_SLICE_DATA_PARTITION_B:
+            return "DATA_PARTITION_B";
+        case NAL_UNIT_TYPE_CODED_SLICE_DATA_PARTITION_C:
+            return "DATA_PARTITION_C";
+        case NAL_UNIT_TYPE_CODED_SLICE_IDR:
+            return "IDR";
+        case NAL_UNIT_TYPE_SEI:
+            return "SEI";
+        case NAL_UNIT_TYPE_SPS:
+            return "SPS";
+        case NAL_UNIT_TYPE_PPS:
+            return "PPS";
+        case NAL_UNIT_TYPE_AUD:
+            return "AUD";
+        case NAL_UNIT_TYPE_END_OF_SEQUENCE:
+            return "END_OF_SEQUENCE";
+        case NAL_UNIT_TYPE_END_OF_STREAM:
+            return "END_OF_STREAM";
+        case NAL_UNIT_TYPE_FILLER:
+            return "FILLER";
+        case NAL_UNIT_TYPE_SPS_EXT:
+            return "SPS_EXT";
+        case NAL_UNIT_TYPE_PREFIX_NAL:
+            return "PREFIX_NAL";
+        case NAL_UNIT_TYPE_SUBSET_SPS:
+            return "SUBSET_SPS";
+        case NAL_UNIT_TYPE_DPS:
+            return "DPS";
+        case NAL_UNIT_TYPE_CODED_SLICE_AUX:
+            return "AUX";
+        case NAL_UNIT_TYPE_CODED_SLICE_SVC_EXTENSION:
+            return "SVC_EXTENSION";
+        default:
+            return "Unknown";
+    }
+}
 
 //7.3.1 NAL unit syntax
 int read_debug_nal_unit(h264_stream_t* h, uint8_t* buf, int size)
@@ -2839,9 +2882,17 @@ int read_debug_nal_unit(h264_stream_t* h, uint8_t* buf, int size)
 
     bs_t* b = bs_new(rbsp_buf, rbsp_size);
     printf("\n===== nal_unit =====\n");
-    printf("%ld.%d: ", (long int)(b->p - b->start), b->bits_left); int forbidden_zero_bit = bs_read_u(b, 1); printf("forbidden_zero_bit: %d \n", forbidden_zero_bit); 
-    printf("%ld.%d: ", (long int)(b->p - b->start), b->bits_left); nal->nal_ref_idc = bs_read_u(b, 2); printf("nal->nal_ref_idc: %d \n", nal->nal_ref_idc); 
-    printf("%ld.%d: ", (long int)(b->p - b->start), b->bits_left); nal->nal_unit_type = bs_read_u(b, 5); printf("nal->nal_unit_type: %d \n", nal->nal_unit_type); 
+
+    printf("%ld.%d: ", (long int)(b->p - b->start), b->bits_left); int forbidden_zero_bit = bs_read_u(b, 1);
+    printf("forbidden_zero_bit: %d \n", forbidden_zero_bit);
+
+    printf("%ld.%d: ", (long int)(b->p - b->start), b->bits_left); nal->nal_ref_idc = bs_read_u(b, 2);
+    printf("nal->nal_ref_idc: %d \n", nal->nal_ref_idc);
+
+    printf("%ld.%d: ", (long int)(b->p - b->start), b->bits_left); nal->nal_unit_type = bs_read_u(b, 5);
+    printf("nal->nal_unit_type: %d (%s)\n", nal->nal_unit_type, nal_unit_type_to_str(nal->nal_unit_type));
+
+
     
     if( nal->nal_unit_type == 14 || nal->nal_unit_type == 21 || nal->nal_unit_type == 20 )
     {
