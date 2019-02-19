@@ -2859,6 +2859,21 @@ char* nal_unit_type_to_str(int nal_unit_type) {
     }
 }
 
+char* nal_ref_idc_to_str(int nal_ref_idc) {
+    switch ( nal_ref_idc ) {
+        case 0:
+            return "START_CODE";
+        case 1:
+            return "B_FRAME";
+        case 2:
+            return "P_FRAME";
+        case 3:
+            return "SEQ_HEADER/I_FRAME";
+        default:
+            return "Unknown";
+    }
+}
+
 //7.3.1 NAL unit syntax
 int read_debug_nal_unit(h264_stream_t* h, uint8_t* buf, int size)
 {
@@ -2887,7 +2902,7 @@ int read_debug_nal_unit(h264_stream_t* h, uint8_t* buf, int size)
     printf("forbidden_zero_bit: %d \n", forbidden_zero_bit);
 
     printf("%ld.%d: ", (long int)(b->p - b->start), b->bits_left); nal->nal_ref_idc = bs_read_u(b, 2);
-    printf("nal->nal_ref_idc: %d \n", nal->nal_ref_idc);
+    printf("nal->nal_ref_idc: %d (%s)\n", nal->nal_ref_idc, nal_ref_idc_to_str(nal->nal_ref_idc));
 
     printf("%ld.%d: ", (long int)(b->p - b->start), b->bits_left); nal->nal_unit_type = bs_read_u(b, 5);
     printf("nal->nal_unit_type: %d (%s)\n", nal->nal_unit_type, nal_unit_type_to_str(nal->nal_unit_type));
