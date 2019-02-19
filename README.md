@@ -54,7 +54,7 @@ _This library is not an encoder or decoder_, although you could use it to make w
 ## Implementation Status
 
 Everything in the H264 standard is implemented except for: 
-- parsing of diffeent SEI messages
+- parsing of different SEI messages
 - SPS extension
 - slice data
 - slice data partitioning
@@ -63,7 +63,7 @@ Most of the unimplemented data will be correctly skipped when reading and ignore
 
 Reading and writing slice data is complex and may not be fully implemented soon (target: 1.0.0 version), although there is some work-in-progress code for it.
 
-Slice data partitioning will not be implemented in the forseeable future.  It would require extensive changes to the library, and as it is only available in Extended Profile, its utility is limited.
+Slice data partitioning will not be implemented in the foreseeable future.  It would require extensive changes to the library, and as it is only available in Extended Profile, its utility is limited.
 
 
 ## Documentation
