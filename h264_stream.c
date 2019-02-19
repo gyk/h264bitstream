@@ -2838,6 +2838,7 @@ int read_debug_nal_unit(h264_stream_t* h, uint8_t* buf, int size)
     }
 
     bs_t* b = bs_new(rbsp_buf, rbsp_size);
+    printf("\n===== nal_unit =====\n");
     printf("%ld.%d: ", (long int)(b->p - b->start), b->bits_left); int forbidden_zero_bit = bs_read_u(b, 1); printf("forbidden_zero_bit: %d \n", forbidden_zero_bit); 
     printf("%ld.%d: ", (long int)(b->p - b->start), b->bits_left); nal->nal_ref_idc = bs_read_u(b, 2); printf("nal->nal_ref_idc: %d \n", nal->nal_ref_idc); 
     printf("%ld.%d: ", (long int)(b->p - b->start), b->bits_left); nal->nal_unit_type = bs_read_u(b, 5); printf("nal->nal_unit_type: %d \n", nal->nal_unit_type); 
@@ -3627,6 +3628,7 @@ void read_debug_rbsp_trailing_bits(bs_t* b)
 //7.3.3 Slice header syntax
 void read_debug_slice_header(h264_stream_t* h, bs_t* b)
 {
+    printf("\n----- slice_header  -----\n");
     slice_header_t* sh = h->sh;
     if( 1 )
     {

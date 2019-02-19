@@ -108,7 +108,7 @@ int main(int argc, char *argv[])
 
 #endif
 
-    if (infile == NULL) { fprintf( stderr, "!! Error: could not open file: %s \n", strerror(errno)); exit(EXIT_FAILURE); }
+    if (infile == NULL) { fprintf( stderr, "\n!! Error: could not open file: %s \n", strerror(errno)); exit(EXIT_FAILURE); }
 
     if (h264_dbgfile == NULL) { h264_dbgfile = stdout; }
     
@@ -125,7 +125,7 @@ int main(int argc, char *argv[])
         rsz = fread(buf + sz, 1, BUFSIZE - sz, infile);
         if (rsz == 0)
         {
-            if (ferror(infile)) { fprintf( stderr, "!! Error: read failed: %s \n", strerror(errno)); break; }
+            if (ferror(infile)) { fprintf( stderr, "\n!! Error: read failed: %s \n", strerror(errno)); break; }
             break;  // if (feof(infile)) 
         }
 
@@ -135,7 +135,7 @@ int main(int argc, char *argv[])
         {
             if ( opt_verbose > 0 )
             {
-               fprintf( h264_dbgfile, "!! Found NAL at offset %lld (0x%04llX), size %lld (0x%04llX) \n",
+               fprintf( h264_dbgfile, "\n!! Found NAL at offset %lld (0x%04llX), size %lld (0x%04llX) \n",
                       (long long int)(off + (p - buf) + nal_start),
                       (long long int)(off + (p - buf) + nal_start),
                       (long long int)(nal_end - nal_start),
@@ -176,7 +176,7 @@ int main(int argc, char *argv[])
         // if no NALs found in buffer, discard it
         if (p == buf) 
         {
-            fprintf( stderr, "!! Did not find any NALs between offset %lld (0x%04llX), size %lld (0x%04llX), discarding \n",
+            fprintf( stderr, "\n!! Did not find any NALs between offset %lld (0x%04llX), size %lld (0x%04llX), discarding \n",
                    (long long int)off, 
                    (long long int)off, 
                    (long long int)off + sz, 
