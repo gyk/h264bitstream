@@ -2874,6 +2874,29 @@ char* nal_ref_idc_to_str(int nal_ref_idc) {
     }
 }
 
+char* primary_pic_type_to_str(int primary_pic_type) {
+    switch ( primary_pic_type ) {
+        case AUD_PRIMARY_PIC_TYPE_I:
+            return "I";
+        case AUD_PRIMARY_PIC_TYPE_IP:
+            return "I, P";
+        case AUD_PRIMARY_PIC_TYPE_IPB:
+            return "I, P, B";
+        case AUD_PRIMARY_PIC_TYPE_SI:
+            return "SI";
+        case AUD_PRIMARY_PIC_TYPE_SISP:
+            return "SI, SP";
+        case AUD_PRIMARY_PIC_TYPE_ISI:
+            return "I, SI";
+        case AUD_PRIMARY_PIC_TYPE_ISIPSP:
+            return "I, SI, P, SP";
+        case AUD_PRIMARY_PIC_TYPE_ISIPSPB:
+            return "I, SI, P, SP, B";
+        default:
+            return "Unknown";
+    }
+}
+
 //7.3.1 NAL unit syntax
 int read_debug_nal_unit(h264_stream_t* h, uint8_t* buf, int size)
 {
@@ -3581,7 +3604,8 @@ void read_debug_sei_message(h264_stream_t* h, bs_t* b)
 //7.3.2.4 Access unit delimiter RBSP syntax
 void read_debug_access_unit_delimiter_rbsp(h264_stream_t* h, bs_t* b)
 {
-    printf("%ld.%d: ", (long int)(b->p - b->start), b->bits_left); h->aud->primary_pic_type = bs_read_u(b, 3); printf("h->aud->primary_pic_type: %d \n", h->aud->primary_pic_type); 
+    printf("%ld.%d: ", (long int)(b->p - b->start), b->bits_left); h->aud->primary_pic_type = bs_read_u(b, 3);
+    printf("h->aud->primary_pic_type: %d (%s) \n", h->aud->primary_pic_type, primary_pic_type_to_str(h->aud->primary_pic_type));
 }
 
 //7.3.2.5 End of sequence RBSP syntax
